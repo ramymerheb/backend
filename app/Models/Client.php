@@ -4,12 +4,14 @@ namespace App\Models;
 
 use App\Http\Filters\ClientsFilter;
 use App\Http\Filters\StocksFilter;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Notifications\Notifiable;
 /**
  * \Models\User
  *
@@ -24,9 +26,9 @@ use Carbon\Carbon;
  * @mixin \Eloquent
  */
 
-class Client extends Model implements MustVerifyEmail
+class Client extends Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
@@ -44,24 +46,26 @@ class Client extends Model implements MustVerifyEmail
         return $this->where('created_at', '>', Carbon::now()->subDays($days))
             ->count();
     }
-
     public function hasVerifiedEmail()
     {
-        // TODO: Implement hasVerifiedEmail() method.
+        return ! is_null($this->email_verified_at);
     }
 
     public function markEmailAsVerified()
     {
-        // TODO: Implement markEmailAsVerified() method.
+        return $this->forceFill([
+            'email_verified_at' => $this->freshTimestamp(),
+        ])->save();
     }
 
     public function sendEmailVerificationNotification()
     {
-        // TODO: Implement sendEmailVerificationNotification() method.
+        $this->notify(new VerifyEmail());
     }
 
     public function getEmailForVerification()
     {
-        // TODO: Implement getEmailForVerification() method.
+        return $this->email;
     }
 }
+

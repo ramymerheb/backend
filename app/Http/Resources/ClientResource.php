@@ -20,6 +20,7 @@ class ClientResource extends JsonResource
             'name'       => $this->name,
             'email'      => $this->email,
             'image'      => $this->image,
+            'email_verified_at'      => Carbon::parse($this->email_verified_at)->toDayDateTimeString(),
             'created_at' => Carbon::parse($this->created_at)->toDayDateTimeString(),
         ];
     }

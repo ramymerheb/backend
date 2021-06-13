@@ -16,12 +16,15 @@ class ClientRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $rules = [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:clients',
-            'g-recaptcha-response' => 'required|captcha',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+//            'g-recaptcha-response' => 'required|captcha',
         ];
+        if ($this->attributes->get('image', false)) {
+            $rules['image'] = 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048';
+        }
+        return $rules;
     }
 
     /**
