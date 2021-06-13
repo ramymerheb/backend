@@ -16,6 +16,7 @@ use Carbon\Carbon;
  * @property int $id
  * @property string $name
  * @property string $email
+ * @property string $image
  * @property Carbon $email_verified_at
  *
  * @property Carbon $created_at
@@ -30,6 +31,7 @@ class Client extends Model implements MustVerifyEmail
     protected $fillable = [
         'name',
         'email',
+        'image',
         'email_verified_at'
     ];
 

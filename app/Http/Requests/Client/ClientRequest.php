@@ -19,6 +19,8 @@ class ClientRequest extends FormRequest
         return [
             'name' => 'required|string|between:2,100',
             'email' => 'required|string|email|max:100|unique:clients',
+            'g-recaptcha-response' => 'required|captcha',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
     }
 
